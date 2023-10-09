@@ -1,6 +1,6 @@
 resource "aws_ecr_repository" "ecr_repository" {
-  name                 = local.name
-  force_delete         = true
+  name         = local.name
+  force_delete = true
 
   image_scanning_configuration {
     scan_on_push = true

@@ -11,7 +11,7 @@ resource "aws_s3_bucket_policy" "static_content_bucket_policy" {
 data "aws_iam_policy_document" "s3_static_content_policy" {
   statement {
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["cloudfront.amazonaws.com"]
     }
     condition {
