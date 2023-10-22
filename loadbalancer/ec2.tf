@@ -5,7 +5,7 @@ resource "aws_instance" "default" {
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
 
-  //  vpc_security_group_ids = [aws_security_group.default.id]
+  vpc_security_group_ids = [aws_security_group.default.id]
   tags = {
     Name = "${local.name}-default"
   }
