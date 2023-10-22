@@ -56,7 +56,6 @@ resource "aws_security_group_rule" "ecs_from_alb" {
   security_group_id        = aws_security_group.ecs.id
 }
 
-
 resource "aws_security_group" "default" {
   name                   = "${local.name}-default"
   vpc_id                 = module.vpc.vpc_id

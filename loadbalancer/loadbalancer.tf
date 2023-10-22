@@ -6,7 +6,6 @@ resource "aws_lb" "alb" {
   subnets            = module.vpc.public_subnets
 }
 
-
 resource "aws_lb_listener" "alb_listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = "80"
@@ -37,7 +36,6 @@ resource "aws_lb_listener_rule" "alb_listener_rule" {
     }
   }
 }
-
 
 resource "aws_lb_target_group" "target_group" {
   name        = "${local.name}-target-group"

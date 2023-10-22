@@ -1,11 +1,9 @@
-
 resource "aws_lb" "alb" {
   name               = "${local.name}-alb"
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
   subnets            = module.vpc.public_subnets
 }
-
 
 resource "aws_lb_listener" "alb_listener" {
   load_balancer_arn = aws_lb.alb.arn
@@ -37,7 +35,6 @@ resource "aws_lb_listener_rule" "alb_listener_rule" {
     }
   }
 }
-
 
 resource "aws_lb_target_group" "target_group" {
   name        = "${local.name}-target-group"

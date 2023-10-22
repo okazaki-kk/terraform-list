@@ -22,17 +22,17 @@ resource "aws_security_group" "internal_sg" {
   vpc_id = module.vpc.vpc_id
 
   ingress {
-    from_port   = 22  # すべてのポートに対するアクセスを許可
-    to_port     = 22  # すべてのポートに対するアクセスを許可
+    from_port   = 22 # すべてのポートに対するアクセスを許可
+    to_port     = 22 # すべてのポートに対するアクセスを許可
     protocol    = "tcp"
-    cidr_blocks = [module.vpc.vpc_cidr_block]  # 同一VPC内のIP範囲を指定
+    cidr_blocks = [module.vpc.vpc_cidr_block] # 同一VPC内のIP範囲を指定
   }
 
   egress {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # 同一VPC内のIP範囲を指定
+    cidr_blocks = ["0.0.0.0/0"] # 同一VPC内のIP範囲を指定
   }
 }
 
