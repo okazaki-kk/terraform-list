@@ -32,9 +32,9 @@ resource "aws_security_group" "internal" {
   }
 
   ingress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
     security_groups = [aws_security_group.default.id]
   }
 }
