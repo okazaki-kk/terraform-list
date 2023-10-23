@@ -2,7 +2,7 @@
 resource "aws_lb" "alb" {
   name               = "${local.name}-alb"
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb.id]
+  security_groups    = [aws_security_group.default.id]
   subnets            = module.vpc.public_subnets
 }
 
@@ -39,7 +39,7 @@ resource "aws_lb_listener_rule" "alb_listener_rule" {
 
 resource "aws_lb_target_group" "target_group" {
   name        = "${local.name}-target-group"
-  port        = 3000
+  port        = 8080
   protocol    = "HTTP"
   target_type = "instance"
   vpc_id      = module.vpc.vpc_id

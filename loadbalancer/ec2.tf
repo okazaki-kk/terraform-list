@@ -12,10 +12,11 @@ resource "aws_instance" "default" {
 }
 
 resource "aws_instance" "web1" {
-  ami           = "ami-08a706ba5ea257141"
-  instance_type = "t2.micro"
-  key_name      = "otyamura-isucon"
-  subnet_id     = module.vpc.private_subnets[0]
+  ami                    = "ami-08a706ba5ea257141"
+  instance_type          = "t2.micro"
+  key_name               = "otyamura-isucon"
+  subnet_id              = module.vpc.private_subnets[0]
+  vpc_security_group_ids = [aws_security_group.internal_sg.id]
 
   tags = {
     Name = "${local.name}-web1"
@@ -23,10 +24,11 @@ resource "aws_instance" "web1" {
 }
 
 resource "aws_instance" "web2" {
-  ami           = "ami-08a706ba5ea257141"
-  instance_type = "t2.micro"
-  key_name      = "otyamura-isucon"
-  subnet_id     = module.vpc.private_subnets[1]
+  ami                    = "ami-08a706ba5ea257141"
+  instance_type          = "t2.micro"
+  key_name               = "otyamura-isucon"
+  subnet_id              = module.vpc.private_subnets[1]
+  vpc_security_group_ids = [aws_security_group.internal_sg.id]
 
   tags = {
     Name = "${local.name}-web2"
