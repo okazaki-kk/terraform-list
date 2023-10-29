@@ -13,9 +13,9 @@ import (
 func main() {
 	var err error
 	c := mysql.Config{
-		DBName:               "development",
+		DBName:               "chitchat",
 		User:                 "user",
-		Passwd:               "mysql",
+		Passwd:               os.Getenv("MYSQL_PASSWORD"),
 		Net:                  "tcp",
 		ParseTime:            true,
 		Collation:            "utf8mb4_unicode_ci",
@@ -48,6 +48,9 @@ func main() {
 	mux.HandleFunc("/", index)
 	// error
 	mux.HandleFunc("/err", errorRoute)
+
+	// health check
+	mux.HandleFunc("/health", health)
 
 	// defined in route_auth.go
 	mux.HandleFunc("/login", login)
