@@ -20,7 +20,7 @@ func main() {
 		ParseTime:            true,
 		Collation:            "utf8mb4_unicode_ci",
 		AllowNativePasswords: true,
-		Addr:                 os.Getenv("MYSQL_PORT_3306_TCP_ADDR") + ":3306",
+		Addr:                 os.Getenv("MYSQL_HOST") + ":3306",
 	}
 	Db, err = sql.Open("mysql", c.FormatDSN())
 	if err != nil {

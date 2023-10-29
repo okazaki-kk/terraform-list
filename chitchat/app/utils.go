@@ -23,7 +23,7 @@ var logger *log.Logger
 
 // Convenience function for printing to stdout
 func p(a ...interface{}) {
-	fmt.Println(a)
+	fmt.Println(a...)
 }
 
 func loadConfig() {
@@ -42,7 +42,7 @@ func loadConfig() {
 // Convenience function to redirect to the error message page
 func error_message(writer http.ResponseWriter, request *http.Request, msg string) {
 	url := []string{"/err?msg=", msg}
-	http.Redirect(writer, request, strings.Join(url, ""), 302)
+	http.Redirect(writer, request, strings.Join(url, ""), http.StatusFound)
 }
 
 // Checks if the user is logged in and has a session, if not err is not nil

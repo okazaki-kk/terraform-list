@@ -30,7 +30,7 @@ func signupAccount(writer http.ResponseWriter, request *http.Request) {
 	if err := user.Create(); err != nil {
 		danger(err, "Cannot create user")
 	}
-	http.Redirect(writer, request, "/login", 302)
+	http.Redirect(writer, request, "/login", http.StatusFound)
 }
 
 // POST /authenticate
@@ -59,10 +59,10 @@ func authenticate(writer http.ResponseWriter, request *http.Request) {
 			HttpOnly: true,
 		}
 		http.SetCookie(writer, &cookie)
-		http.Redirect(writer, request, "/", 302)
+		http.Redirect(writer, request, "/", http.StatusFound)
 	} else {
 		danger("not correct password")
-		http.Redirect(writer, request, "/login", 302)
+		http.Redirect(writer, request, "/login", http.StatusFound)
 	}
 
 }
@@ -76,5 +76,5 @@ func logout(writer http.ResponseWriter, request *http.Request) {
 		session := Session{Uuid: cookie.Value}
 		session.DeleteByUUID()
 	}
-	http.Redirect(writer, request, "/", 302)
+	http.Redirect(writer, request, "/", http.StatusFound)
 }
