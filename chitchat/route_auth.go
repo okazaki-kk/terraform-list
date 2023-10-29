@@ -1,9 +1,6 @@
 package main
 
-import (
-	//	"github.com/sausheong/gwp/Chapter_2_Go_ChitChat/chitchat/data"
-	"net/http"
-)
+import "net/http"
 
 // GET /login
 // Show the login page

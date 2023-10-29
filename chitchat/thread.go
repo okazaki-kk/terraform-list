@@ -32,7 +32,10 @@ func (post *Post) CreatedAtDate() string {
 
 // get the number of posts in a thread
 func (thread *Thread) NumReplies() (count int) {
-	rows, err := Db.Query("SELECT count(*) FROM posts where thread_id = ?", thread.Id)
+	stmt := "SELECT count(*) FROM posts where thread_id = ?"
+	info(stmt, thread.Id)
+
+	rows, err := Db.Query(stmt, thread.Id)
 	if err != nil {
 		return
 	}
@@ -47,7 +50,10 @@ func (thread *Thread) NumReplies() (count int) {
 
 // get posts to a thread
 func (thread *Thread) Posts() (posts []Post, err error) {
-	rows, err := Db.Query("SELECT id, uuid, body, user_id, thread_id, created_at FROM posts where thread_id = ?", thread.Id)
+	stmt := "SELECT id, uuid, body, user_id, thread_id, created_at FROM posts where thread_id = ?"
+	info(stmt, thread.Id)
+
+	rows, err := Db.Query(stmt, thread.Id)
 	if err != nil {
 		return
 	}
@@ -66,7 +72,11 @@ func (thread *Thread) Posts() (posts []Post, err error) {
 func (user *User) CreateThread(topic string) (Thread, error) {
 	uuid := createUUID()
 	createdAt := time.Now()
-	res, err := Db.Exec("insert into threads (uuid, topic, user_id, created_at) values (?, ?, ?, ?)", uuid, topic, user.Id, createdAt)
+
+	stmt := "insert into threads (uuid, topic, user_id, created_at) values (?, ?, ?, ?)"
+	info(stmt, uuid, topic, user.Id, createdAt)
+
+	res, err := Db.Exec(stmt, uuid, topic, user.Id, createdAt)
 	if err != nil {
 		return Thread{}, err
 	}
@@ -85,16 +95,6 @@ func (user *User) CreateThread(topic string) (Thread, error) {
 		CreatedAt: createdAt,
 	}
 	return conv, nil
-
-	/*statement := "insert into threads (uuid, topic, user_id, created_at) values (?, $2, $3, $4) returning id, uuid, topic, user_id, created_at"
-	stmt, err := Db.Prepare(statement)
-	if err != nil {
-		return
-	}
-	defer stmt.Close()
-	// use QueryRow to return a row and scan the returned id into the Session struct
-	err = stmt.QueryRow(createUUID(), topic, user.Id, time.Now()).Scan(&conv.Id, &conv.Uuid, &conv.Topic, &conv.UserId, &conv.CreatedAt)
-	return*/
 }
 
 // Create a new post to a thread
@@ -102,7 +102,10 @@ func (user *User) CreatePost(conv Thread, body string) (Post, error) {
 	uuid := createUUID()
 	createdAt := time.Now()
 
-	res, err := Db.Exec("insert into posts (uuid, body, user_id, thread_id, created_at) values (?, ?, ?, ?, ?)", uuid, body, user.Id, conv.Id, createdAt)
+	stmt := "insert into posts (uuid, body, user_id, thread_id, created_at) values (?, ?, ?, ?, ?)"
+	info(stmt, uuid, body, user.Id, conv.Id, createdAt)
+
+	res, err := Db.Exec(stmt, uuid, body, user.Id, conv.Id, createdAt)
 	if err != nil {
 		return Post{}, err
 	}
@@ -122,20 +125,13 @@ func (user *User) CreatePost(conv Thread, body string) (Post, error) {
 		CreatedAt: createdAt,
 	}
 	return post, nil
-	/*statement := "insert into posts (uuid, body, user_id, thread_id, created_at) values (?, $2, $3, $4, $5) returning id, uuid, body, user_id, thread_id, created_at"
-	stmt, err := Db.Prepare(statement)
-	if err != nil {
-		return
-	}
-	defer stmt.Close()
-	// use QueryRow to return a row and scan the returned id into the Session struct
-	err = stmt.QueryRow(createUUID(), body, user.Id, conv.Id, time.Now()).Scan(&post.Id, &post.Uuid, &post.Body, &post.UserId, &post.ThreadId, &post.CreatedAt)
-	return*/
 }
 
 // Get all threads in the database and returns it
 func Threads() (threads []Thread, err error) {
-	rows, err := Db.Query("SELECT id, uuid, topic, user_id, created_at FROM threads ORDER BY created_at DESC")
+	stmt := "SELECT id, uuid, topic, user_id, created_at FROM threads ORDER BY created_at DESC"
+	info(stmt)
+	rows, err := Db.Query(stmt)
 	if err != nil {
 		return
 	}
@@ -153,7 +149,9 @@ func Threads() (threads []Thread, err error) {
 // Get a thread by the UUID
 func ThreadByUUID(uuid string) (conv Thread, err error) {
 	conv = Thread{}
-	err = Db.QueryRow("SELECT id, uuid, topic, user_id, created_at FROM threads WHERE uuid = ?", uuid).
+	stmt := "SELECT id, uuid, topic, user_id, created_at FROM threads WHERE uuid = ?"
+	info(stmt, uuid)
+	err = Db.QueryRow(stmt, uuid).
 		Scan(&conv.Id, &conv.Uuid, &conv.Topic, &conv.UserId, &conv.CreatedAt)
 	return
 }
@@ -161,7 +159,9 @@ func ThreadByUUID(uuid string) (conv Thread, err error) {
 // Get the user who started this thread
 func (thread *Thread) User() (user User) {
 	user = User{}
-	Db.QueryRow("SELECT id, uuid, name, email, created_at FROM users WHERE id = ?", thread.UserId).
+	stmt := "SELECT id, uuid, name, email, created_at FROM users WHERE id = ?"
+	info(stmt, thread.UserId)
+	Db.QueryRow(stmt, thread.UserId).
 		Scan(&user.Id, &user.Uuid, &user.Name, &user.Email, &user.CreatedAt)
 	return
 }
@@ -169,7 +169,9 @@ func (thread *Thread) User() (user User) {
 // Get the user who wrote the post
 func (post *Post) User() (user User) {
 	user = User{}
-	Db.QueryRow("SELECT id, uuid, name, email, created_at FROM users WHERE id = ?", post.UserId).
+	stmt := "SELECT id, uuid, name, email, created_at FROM users WHERE id = ?"
+	info(stmt, post.UserId)
+	Db.QueryRow(stmt, post.UserId).
 		Scan(&user.Id, &user.Uuid, &user.Name, &user.Email, &user.CreatedAt)
 	return
 }
