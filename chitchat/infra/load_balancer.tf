@@ -3,6 +3,10 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
   subnets            = module.vpc.public_subnets
+  access_logs {
+    enabled = true
+    bucket  = aws_s3_bucket.alb_logs.bucket
+  }
 }
 
 resource "aws_lb_listener" "alb_listener" {
