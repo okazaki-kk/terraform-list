@@ -14,7 +14,7 @@ func main() {
 	var err error
 	c := mysql.Config{
 		DBName:               "chitchat",
-		User:                 "user",
+		User:                 "admin",
 		Passwd:               os.Getenv("MYSQL_PASSWORD"),
 		Net:                  "tcp",
 		ParseTime:            true,
@@ -27,7 +27,6 @@ func main() {
 		p("open error", err)
 		log.Fatal(err)
 	}
-	p("format", c.FormatDSN())
 
 	loadConfig()
 	logger = log.New(os.Stdout, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
@@ -44,8 +43,6 @@ func main() {
 	// route handler functions defined in other files
 	//
 
-	// index
-	mux.HandleFunc("/", index)
 	// error
 	mux.HandleFunc("/err", errorRoute)
 
@@ -64,6 +61,9 @@ func main() {
 	mux.HandleFunc("/thread/create", createThread)
 	mux.HandleFunc("/thread/post", postThread)
 	mux.HandleFunc("/thread/read", readThread)
+
+	// index
+	mux.HandleFunc("/", index)
 
 	// starting up the server
 	server := &http.Server{

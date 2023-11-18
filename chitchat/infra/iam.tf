@@ -38,3 +38,23 @@ resource "aws_iam_role_policy_attachment" "ecs_basic" {
   role       = aws_iam_role.ecs.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
+resource "aws_iam_role_policy" "ecs_custom" {
+  name = "${local.name}-ecs-parameter"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters",
+        ]
+        Resource = [
+          "${data.aws_ssm_parameter.admin_db_password.arn}"
+        ]
+      }
+    ]
+  })
+
+  role = aws_iam_role.ecs.id
+}

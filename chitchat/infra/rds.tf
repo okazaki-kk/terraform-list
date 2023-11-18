@@ -1,11 +1,7 @@
-data "aws_ssm_parameter" "admin_db_password" {
-  name = "/chitchat/ADMIN_DB_PASSWORD"
-}
-
 resource "aws_db_subnet_group" "main" {
-  name        = "${local.name}-db-subnet-group"
+  name        = local.name
   subnet_ids  = module.vpc.private_subnets
-  description = "DB subnet group for chitchat"
+  description = "DB subnet group for ${local.name}"
 }
 
 resource "aws_db_instance" "main" {
@@ -33,7 +29,7 @@ resource "aws_db_instance" "main" {
 resource "aws_db_parameter_group" "main" {
   name        = local.name
   family      = "mysql5.7"
-  description = "db parameter group for chitchat"
+  description = "db parameter group for ${local.name} application"
 
   parameter {
     name  = "character_set_server"
@@ -84,4 +80,8 @@ resource "aws_db_parameter_group" "main" {
     name         = "skip-character-set-client-handshake"
     value        = "1"
   }
+}
+
+data "aws_ssm_parameter" "admin_db_password" {
+  name = "/chitchat/ADMIN_DB_PASSWORD"
 }
