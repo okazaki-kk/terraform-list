@@ -1,5 +1,5 @@
 resource "aws_instance" "isucon" {
-  ami                         = "ami-0676c829e30e00846"
+  ami                         = "ami-0d92a4724cae6f07b"
   instance_type               = "c6i.large"
   key_name                    = "otyamura-isucon"
   subnet_id                   = aws_subnet.isucon_public_a.id
@@ -18,7 +18,7 @@ resource "aws_instance" "isucon-bench" {
   key_name      = "otyamura-isucon"
   subnet_id     = aws_subnet.isucon_public_c.id
 
-  vpc_security_group_ids = [aws_security_group.isucon_bench.id]
+  vpc_security_group_ids = [aws_security_group.bench.id]
 
   tags = {
     Name = "otyamura-isucon-bench"

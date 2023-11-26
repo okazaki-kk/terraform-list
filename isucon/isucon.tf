@@ -118,3 +118,33 @@ resource "aws_security_group" "isucon" {
     Name = "isucon"
   }
 }
+
+resource "aws_security_group" "bench" {
+  vpc_id      = aws_vpc.isucon.id
+  name        = "bench"
+  description = "bench"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["3.113.59.168/32", "13.113.172.248/32"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group_rule" "isucon_from_bench" {
+  description              = "Allow all from Security Group for bench."
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  source_security_group_id = aws_security_group.bench.id
+  security_group_id        = aws_security_group.isucon.id
+}
