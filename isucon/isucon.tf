@@ -107,47 +107,6 @@ resource "aws_security_group" "isucon" {
     cidr_blocks = ["3.113.59.168/32", "13.113.172.248/32"]
   }
 
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["172.31.0.0/16"]
-  }
-
-  ingress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = data.aws_ip_ranges.ec2_instance_connect.cidr_blocks
-    ipv6_cidr_blocks = data.aws_ip_ranges.ec2_instance_connect.ipv6_cidr_blocks
-  }
-
-  # ingress {
-  #   cidr_blocks      = ["172.31.0.0/16"]
-  #   description      = ""
-  #   from_port        = 0
-  #   ipv6_cidr_blocks = []
-  #   prefix_list_ids  = []
-  #   protocol         = "-1"
-  #   security_groups  = []
-  #   self             = false
-  #   to_port          = 0
-  # }
-
-  # ingress {
-  #   cidr_blocks = [
-  #     "3.112.23.0/29",
-  #   ]
-  #   description      = ""
-  #   from_port        = 0
-  #   ipv6_cidr_blocks = []
-  #   prefix_list_ids  = []
-  #   protocol         = "-1"
-  #   security_groups  = []
-  #   self             = false
-  #   to_port          = 0
-  # }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -157,51 +116,5 @@ resource "aws_security_group" "isucon" {
 
   tags = {
     Name = "isucon"
-  }
-}
-
-resource "aws_security_group" "isucon_bench" {
-  vpc_id      = aws_vpc.isucon.id
-  name        = "isucon_bench"
-  description = "isucon_bench"
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["3.113.59.168/32", "13.113.172.248/32"]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["3.113.59.168/32", "13.113.172.248/32"]
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["3.113.59.168/32", "13.113.172.248/32"]
-  }
-
-  ingress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = data.aws_ip_ranges.ec2_instance_connect.cidr_blocks
-    ipv6_cidr_blocks = data.aws_ip_ranges.ec2_instance_connect.ipv6_cidr_blocks
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "isucon_bench"
   }
 }
