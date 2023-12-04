@@ -9,7 +9,7 @@ module "vpc" {
   public_subnets  = ["10.0.11.0/24", "10.0.12.0/24"]
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 
-  public_subnet_names  = ["${local.name}-1a", "${local.name}-public-1c"]
+  public_subnet_names  = ["${local.name}-public-1a", "${local.name}-public-1c"]
   private_subnet_names = ["${local.name}-private-1a", "${local.name}-private-1c"]
 
   enable_dns_hostnames = true
