@@ -9,7 +9,7 @@ module "eks" {
   iam_role_arn    = aws_iam_role.cluster-role.arn
 
   cluster_endpoint_public_access       = true
-  cluster_endpoint_public_access_cidrs = ["13.113.172.248/32"]
+  cluster_endpoint_public_access_cidrs = ["3.113.59.168/32", "13.113.172.248/32"]
 
   cluster_addons = {
     kube-proxy = {
