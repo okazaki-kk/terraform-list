@@ -1,0 +1,57 @@
+## デプロイメント
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chitchat-deployment
+spec:
+  replicas: 1
+  selector:           # これは deployment - pod 対応用
+    matchLabels:
+      app: chitchat
+  template:
+    metadata:
+      labels:
+        app: chitchat
+    spec:
+      containers:
+      - name: chitchat
+        image: 167855287371.dkr.ecr.ap-northeast-1.amazonaws.com/chitchat:1
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        env:
+        - name: MYSQL_HOST
+          value: chitchat.cwz2ti5k66tm.ap-northeast-1.rds.amazonaws.com
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-password
+              key: MYSQL_PASSWORD
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-password
+data:
+  MYSQL_PASSWORD: $DB_PASSWORD # envsubstでここを置換する
+---
+# app
+apiVersion: v1
+kind: Service
+metadata:
+  name: chitchat-svc
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30000
+  selector:
+    app: chitchat
